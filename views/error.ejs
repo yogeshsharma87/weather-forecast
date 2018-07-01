@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<%= error.status %>
+<%= JSON.stringify(error.stack) %> </h1>
+</body>
+</html>
+extends layout
+
+block content
+  h1= message
+  h2= error.status
+  pre #{error.stack}

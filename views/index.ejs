@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+        </title>
+        <style type="text/css">
+            .bs-example {
+                margin: 20px;
+            }
+        </style>
+        <link href="stylesheets/bootstrap.min.css" rel="stylesheet"/>
+        <link href="stylesheets/bootstrap-theme.min.css" rel="stylesheet"/>
+        <script src="javascripts/jquery.min.js"/></script>
+        <script src="javascripts/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                $('.cityname').on('keypress',function(e){
+                    if(e.which == 13)
+                        window.open('?city='+$('.cityname').val(),'_self');
+                })
+                $('.searchcity').on('click',function(){
+                    window.open('?city='+$('.cityname').val(),'_self');
+                })
+            });
+        </script>
+    </head>
+    <body>
+        <div class="bs-example" style="max-width:200px;margin:20px auto;">
+            <div class="input-group">
+                <input type="text" class="form-control cityname" placeholder="Search for city...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default searchcity" type="button">Go!</button>
+                </span>
+            </div>
+        </div>
+        <div class="bs-example">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-parent="#accordion">
+                        <p class="panel-title text-center">
+                            <strong>
+                                <% if (weather.city) { %>Weather of <%=weather.city.name%>, <%=weather.city.country%><% } %>
+                                <% if (weather.cod == '404') { %><%=weather.message%><% } %>
+                            </strong>
+                        </p>
+                    </div>
+                    <% if (weather.cod != '404') { %>
+                    <div class="panel-collapse collapse show" id="collapse">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                              <table class="table bordered">
+                                <thead>
+                                  <tr>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Temperature</th>
+                                    <th class="text-center">Temp Min</th>
+                                    <th class="text-center">Temp Max</th>
+                                    <th class="text-center">Humidity</th>
+                                    <th class="text-center">Weather</th>
+                                    <th class="text-center">Description</th>
+                                    <th class="text-center">&nbsp;</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <%
+                                let forcast = weather.list;
+                                for(var i in forcast) {
+                                %>
+                                    <tr>
+                                        <td class="text-center"><%=new Date(forcast[i].dt_txt).toLocaleString('en-US', { hour12: true })%></td>
+                                        <td class="text-center"><%=forcast[i].main.temp%>&#8451;</td>
+                                        <td class="text-center"><%=forcast[i].main.temp_min%>&#8451;</td>
+                                        <td class="text-center"><%=forcast[i].main.temp_max%>&#8451;</td>
+                                        <td class="text-center"><%=forcast[i].main.humidity%></td>
+                                        <td class="text-center"><%=forcast[i].weather[0].main%></td>
+                                        <td class="text-center"><%=forcast[i].weather[0].description%></td>
+                                        <td class="text-center"><img src="http://openweathermap.org/img/w/<%=forcast[i].weather[0].icon%>.png" /></td>
+                                    </tr>
+                                <% } %>
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
